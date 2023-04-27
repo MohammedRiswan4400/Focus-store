@@ -1,0 +1,46 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:focus_store/presentation/extraS/widgets/extra_screens_main_widgets.dart';
+import '../../../core/color/colors.dart';
+import 'widget/wishlist_widgets.dart';
+
+class ScreenWishlist extends StatelessWidget {
+  const ScreenWishlist({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: const AppbarPop(),
+        title: AppBArTitle(
+          title: 'My Wishlist',
+        ),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: appBarBackground,
+        shadowColor: colorTransperant,
+        toolbarHeight: 60,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(color: appBarContainerColor),
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          left: 8,
+          right: 8,
+        ),
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: const [
+            WishlistItemsGridView(),
+          ],
+        ),
+      ),
+    );
+  }
+}
