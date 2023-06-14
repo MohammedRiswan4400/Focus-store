@@ -43,6 +43,7 @@ class ProfileWithTextField extends StatelessWidget {
   TextInputType keyboardType;
   void Function() onTap;
   ProfileWithTextField({
+    // required
     required this.hintText,
     required this.icon,
     required this.onTap,

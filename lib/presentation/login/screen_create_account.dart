@@ -3,6 +3,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:focus_store/presentation/login/services/loginscreen_services.dart';
 import 'package:focus_store/presentation/login/widgets/login_screen_widgets.dart';
 import '../../core/color/colors.dart';
 import '../../core/widgets/focus_widgets.dart';
@@ -85,7 +86,7 @@ class ScreenCreateAccount extends StatelessWidget {
                             ),
                             const MySizedBox(h: 10, w: 0),
                             TextFormField(
-                              obscureText: false,
+                              obscureText: true,
                               textInputAction: TextInputAction.next,
                               controller: _passwordController,
                               autovalidateMode:

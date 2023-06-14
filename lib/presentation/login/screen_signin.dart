@@ -1,15 +1,24 @@
 import 'dart:developer';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_store/presentation/login/screen_forgot_password.dart';
 import 'package:focus_store/presentation/login/widgets/login_screen_widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import '../../../core/color/colors.dart';
 import '../../../core/widgets/focus_widgets.dart';
 import '../../main.dart';
+import 'google_sign_in.dart';
 
 final emailController = TextEditingController();
 final passWordController = TextEditingController();
+final googleSignIn = GoogleSignIn();
+
+GoogleSignInAccount? _user;
+
+GoogleSignInAccount get user => _user!;
 
 class ScreenSignIn extends StatelessWidget {
   const ScreenSignIn({
@@ -53,20 +62,62 @@ class ScreenSignIn extends StatelessWidget {
                             title: "Login to Your Account",
                           ),
                           const MySizedBox(h: 20, w: 0),
-                          LoginTExtField(
-                            eMailValidation: AutovalidateMode.disabled,
-                            obscureText: false,
-                            hintText: "Email",
-                            prefix: Icons.email,
-                            signInController: emailController,
+                          TextFormField(
+                            // obscureText: true,
+                            textInputAction: TextInputAction.next,
+                            controller: emailController,
+                            // autovalidateMode: eMailValidation,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (email) =>
+                                email != null && !EmailValidator.validate(email)
+                                    ? "Enter a valid email"
+                                    : null,
+                            decoration: InputDecoration(
+                              hintText: "Email",
+                              prefixIcon: const Icon(Icons.email),
+                              hintStyle: const TextStyle(
+                                fontFamily: "Ubuntu",
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 14,
+                              ),
+                              filled: true,
+                              fillColor:
+                                  const Color.fromARGB(255, 229, 229, 229),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none),
+                            ),
                           ),
                           const MySizedBox(h: 20, w: 0),
-                          LoginTExtField(
-                            obscureText: false,
-                            eMailValidation: AutovalidateMode.disabled,
-                            hintText: "Password",
-                            prefix: Icons.lock_outline,
-                            signInController: passWordController,
+                          TextFormField(
+                            obscureText: true,
+                            textInputAction: TextInputAction.next,
+                            controller: passWordController,
+                            // autovalidateMode: eMailValidation,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) =>
+                                value != null && value.length < 6
+                                    ? "Enter min 6 charecter"
+                                    : null,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              prefixIcon: const Icon(
+                                Icons.lock_outline,
+                              ),
+                              hintStyle: const TextStyle(
+                                fontFamily: "Ubuntu",
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 14,
+                              ),
+                              filled: true,
+                              fillColor:
+                                  const Color.fromARGB(255, 229, 229, 229),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none),
+                            ),
                           ),
                           const MySizedBox(h: 20, w: 0),
                           GestureDetector(
@@ -111,7 +162,13 @@ class ScreenSignIn extends StatelessWidget {
                           const MySizedBox(h: 20, w: 0),
                           GestureDetector(
                             onTap: () {
-                              gotoScreenNavigation(context);
+                              // gotoScreenNavigation(context);
+                              // log("ggggggggggggggggggggggggggggggggggggg");
+                              final provider =
+                                  Provider.of<GoogelSignInProvider>(context,
+                                      listen: false);
+                              provider.googleLogin();
+                              // googlelLogin();
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -159,6 +216,27 @@ class ScreenSignIn extends StatelessWidget {
       ),
     );
   }
+
+  // Future googlelLogin() async {
+  //   log("aaaaaaaaaaaaaaaaa");
+  //   final googleUser = await googleSignIn.signIn();
+  //   log("bbbbbbbbbbbbbbbbb");
+  //   if (googleUser == null) {
+  //     return log("google User null");
+  //   }
+  //   _user = googleUser;
+  //   final googleAuth = await googleUser.authentication;
+  //   log("ddddddddddddddddddddddd");
+
+  //   final credential = await GoogleAuthProvider.credential(
+  //     accessToken: googleAuth.accessToken,
+  //     idToken: googleAuth.idToken,
+  //   );
+
+  //   await FirebaseAuth.instance.signInWithCredential(credential);
+
+  //   // notifyListeners();
+  // }
 
   Future signIn(BuildContext context) async {
     showDialog(

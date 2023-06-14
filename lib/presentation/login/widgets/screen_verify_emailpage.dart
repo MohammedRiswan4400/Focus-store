@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:focus_store/presentation/navigaion/screen_navigation_page.dart';
-
 import '../../../core/color/colors.dart';
 import '../../../core/widgets/focus_widgets.dart';
+import '../../navigaion/screen_navigation_page.dart';
 import 'login_screen_widgets.dart';
 
 class ScreenVerifyEmailPage extends StatefulWidget {
@@ -81,7 +79,10 @@ class _ScreenVerifyEmailPageState extends State<ScreenVerifyEmailPage> {
   @override
   Widget build(BuildContext context) {
     return isEmailVerified
-        ? ScreenNavigation()
+        ?
+        // const ScreenEmailVerified()zzz
+        // goingToNavigation()
+        ScreenNavigation()
         : Scaffold(
             body: SafeArea(
               child: Stack(

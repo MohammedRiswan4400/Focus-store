@@ -1,19 +1,35 @@
+// import 'dart:developer';
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_store/core/widgets/focus_widgets.dart';
 import 'package:focus_store/presentation/extraS/addressScreen/widgets/address_screen_widhets.dart';
-import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import '../../../application/address_controller/address_provider.dart';
 import '../../../core/color/colors.dart';
+import '../LocationScreen/widgets/location_screen_widgets.dart';
 import '../widgets/extra_screens_main_widgets.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
-class ScreenAddress extends StatelessWidget {
-  const ScreenAddress({super.key});
+class ScreenAddress extends StatefulWidget {
+  // final String value;
+  const ScreenAddress({
+    super.key,
+  });
+
+  @override
+  State<ScreenAddress> createState() => _ScreenAddressState();
+}
+
+class _ScreenAddressState extends State<ScreenAddress> {
+  int selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
+    // final widget = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -38,340 +54,68 @@ class ScreenAddress extends StatelessWidget {
         padding: const EdgeInsets.only(left: 12, right: 12),
         child: Stack(
           children: [
-            ListView.builder(
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onLongPress: () {
-                    showModalBottomSheet(
-                      backgroundColor: colorTransperant,
-                      barrierColor: modelSheetBarrierColor,
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          decoration: const BoxDecoration(
-                            color: colorWhite,
-                            // border: Border.all(width: 2),
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(
-                                20,
-                              ),
-                            ),
-                          ),
-                          height: 200,
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 8, left: 13, right: 13),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromARGB(255, 94, 94, 94),
-                                    borderRadius: BorderRadius.circular(310),
-                                  ),
-                                  height: 7,
-                                  width: 30,
-                                ),
-                                const MySizedBox(h: 20, w: 0),
-                                const Text(
-                                  "Shipping Address",
-                                  style: TextStyle(
-                                      fontFamily: "Ubuntu",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const MySizedBox(h: 20, w: 0),
-                                const Text(
-                                  "Do you want to Edit/Delete this Address",
-                                  style: TextStyle(
-                                    fontFamily: "Ubuntu",
-                                    fontSize: 10,
-                                  ),
-                                ),
-                                const MySizedBox(h: 20, w: 0),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              elevation: 2,
-                                              content: SizedBox(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    2,
-                                                child: ListView(
-                                                  children: [
-                                                    const Text(
-                                                      "Edit Address",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: myFont,
-                                                      ),
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "Full Name(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "Address Name(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "Phone Number(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "Pincode(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "City(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "State(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "Road Name,Area,Colony(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    EditAddressAlertDailoge(
-                                                      hintText:
-                                                          "House No,Building Name(required)*",
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 15, w: 0),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content:
-                                                                const Center(
-                                                              child: Text(
-                                                                "Address Edited",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      myFont,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                30,
-                                                              ),
-                                                            ),
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            width: 180,
-                                                          ),
-                                                        );
-                                                      },
-                                                      style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(
-                                                          navBarColor,
-                                                        ),
-                                                      ),
-                                                      child: const Text(
-                                                        "Add Edited Address",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Ubuntu",
-                                                            fontSize: 12,
-                                                            color: colorBlack),
-                                                      ),
-                                                    ),
-                                                    const MySizedBox(
-                                                        h: 10, w: 0),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(
-                                                          navBarColor,
-                                                        ),
-                                                      ),
-                                                      child: const Text(
-                                                        "Close",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Ubuntu",
-                                                            fontSize: 12,
-                                                            color: colorBlack),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                          navBarColor,
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        "Edit",
-                                        style: TextStyle(
-                                            fontFamily: "Ubuntu",
-                                            fontSize: 12,
-                                            color: colorBlack),
-                                      ),
-                                    ),
-                                    const MySizedBox(h: 0, w: 30),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        showDialog(
-                                          context: context,
-                                          // barrierDismissible: false,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              elevation: 2,
-                                              content: Lottie.network(
-                                                  "https://assets6.lottiefiles.com/packages/lf20_pyxc5ttd.json"),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text(
-                                                    "Close",
-                                                    style: TextStyle(
-                                                      fontFamily: myFont,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color:
-                                                          unselectedItemsColor,
-                                                    ),
-                                                  ),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                        content: const Center(
-                                                          child: Text(
-                                                            "Address Deleted",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    myFont,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                            30,
-                                                          ),
-                                                        ),
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        width: 180,
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: const Text(
-                                                    "Delete",
-                                                    style: TextStyle(
-                                                      fontFamily: myFont,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color:
-                                                          unselectedItemsColor,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                          navBarColor,
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        "Delete",
-                                        style: TextStyle(
-                                            fontFamily: "Ubuntu",
-                                            fontSize: 12,
-                                            color: colorBlack),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+            StreamBuilder(
+              stream: fetchDAtaFromAddress(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final addressList = snapshot.data;
+                  if (addressList!.isEmpty) {
+                    return const Center(
+                      child: Text("Add Address"),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: addressList.length,
+                      itemBuilder: (context, index) {
+                        final address = addressList[index];
+
+                        return InkWell(
+                          onTap: () {
+                            // Navigator.pop(context);
+                            // setState(() {
+                            //   selectedIndex = index;
+                            // });
+                            // Navigator.of(context).pop("screenAddress");
+                            Provider.of<AddressPicker>(context, listen: false)
+                                .selectedAddress(
+                              address,
+                            );
+                            Navigator.of(context).pop();
+
+                            // Navigator.pushNamed(
+                            //   context,
+                            //   // secondScreenRoute,
+                            //   arguments: 'This is the text',
+                            // );
+                          },
+                          child: AddressListTile(
+                            subTitle: address.locality,
+                            title: address.addressType,
+                            addressDAta: addressList[index],
+                            addressListtwo: const [],
+                            iconColor:
+                                selectedIndex == index ? mainBlue : colorWhite,
+                            circleColor: selectedIndex == index
+                                ? colorBlack
+                                : unselectedItemsColor,
                           ),
                         );
                       },
                     );
-                  },
-                  child: AddressListTile(
-                    subTitle: "subTitle",
-                    title: "title",
-                  ),
-                );
+                  }
+                }
+                return const Center(child: CircularProgressIndicator());
               },
             ),
+            // ListView.builder(
+            //   itemCount: 4,
+            //   itemBuilder: (context, index) {
+            //     return AddressListTile(
+            //       subTitle: "subTitle",
+            //       title: "title",
+            //     );
+            //   },
+            // ),
             Positioned(
               left: 0,
               right: 0,
@@ -443,3 +187,18 @@ void showSnackBar(BuildContext context) {
     ),
   );
 }
+
+Stream<List<ModelAddress>> fetchDAtaFromAddress() => FirebaseFirestore.instance
+    .collection("user")
+    .doc(FirebaseAuth.instance.currentUser!.email)
+    .collection("address")
+    .snapshots()
+    .map(
+      (snapshot) => snapshot.docs
+          .map(
+            (doc) => ModelAddress.fromJson(
+              doc.data(),
+            ),
+          )
+          .toList(),
+    );

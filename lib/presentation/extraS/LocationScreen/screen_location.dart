@@ -1,12 +1,18 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:focus_store/presentation/extraS/LocationScreen/widgets/location_screen_widgets.dart';
 import '../../../../core/color/colors.dart';
 import '../../../core/widgets/focus_widgets.dart';
-import '../addressScreen/screen_address.dart';
 import '../widgets/extra_screens_main_widgets.dart';
 
 class ScreenLocation extends StatelessWidget {
-  const ScreenLocation({super.key});
+  ScreenLocation({super.key});
+
+  final addressTypeController = TextEditingController();
+  final addressPlaceController = TextEditingController();
+  final addressSublocalityController = TextEditingController();
+  final addressPincodeCobntroller = TextEditingController();
+  final addressLocalityController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,71 +36,191 @@ class ScreenLocation extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
+      body: Stack(
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            child: Image.asset(
-              "assets/location.png",
-              fit: BoxFit.fill,
-            ),
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                elevation: 2,
-                content: SizedBox(
-                  height: MediaQuery.of(context).size.height / 2,
+          Center(
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(105, 0, 0, 0),
+                // border: Border.all(width: 2),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(
+                    20,
+                  ),
+                ),
+              ),
+              // height: 1000,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 13, right: 13),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
                   child: ListView(
                     children: [
-                      const Text(
-                        "Add Address",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: myFont,
+                      const MySizedBox(h: 10, w: 0),
+                      TextFormField(
+                        controller: addressTypeController,
+                        keyboardType: TextInputType.name,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          hintText: "Address Type eg.(Home,Office...)",
+                          hintStyle: const TextStyle(
+                            fontSize: 10,
+                            fontFamily: myFont,
+                          ),
+                          fillColor: navBarColor,
                         ),
                       ),
                       const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "Full Name(required)*",
+                      TextFormField(
+                        controller: addressPlaceController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          hintText: "Place",
+                          hintStyle: const TextStyle(
+                            fontSize: 10,
+                            fontFamily: myFont,
+                          ),
+                          fillColor: navBarColor,
+                        ),
                       ),
                       const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "Address Name(required)*",
+                      TextFormField(
+                        controller: addressSublocalityController,
+                        keyboardType: TextInputType.name,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          hintText: "Sublocality",
+                          hintStyle: const TextStyle(
+                            fontSize: 10,
+                            fontFamily: myFont,
+                          ),
+                          fillColor: navBarColor,
+                        ),
                       ),
                       const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "Phone Number(required)*",
+                      TextFormField(
+                        keyboardType: TextInputType.name,
+                        controller: addressLocalityController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          hintText: "Locality",
+                          hintStyle: const TextStyle(
+                            fontSize: 10,
+                            fontFamily: myFont,
+                          ),
+                          fillColor: navBarColor,
+                        ),
                       ),
                       const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "Pincode(required)*",
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: addressPincodeCobntroller,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          hintText: "Pin code",
+                          hintStyle: const TextStyle(
+                            fontSize: 10,
+                            fontFamily: myFont,
+                          ),
+                          fillColor: navBarColor,
+                        ),
                       ),
                       const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "City(required)*",
-                      ),
-                      const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "State(required)*",
-                      ),
-                      const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "Road Name,Area,Colony(required)*",
-                      ),
-                      const MySizedBox(h: 15, w: 0),
-                      EditAddressAlertDailoge(
-                        hintText: "House No,Building Name(required)*",
-                      ),
+                      // TextFormField(
+                      //   controller: addressAreaNameController,
+                      //   decoration: InputDecoration(
+                      //     border: OutlineInputBorder(
+                      //       borderSide: BorderSide.none,
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //     filled: true,
+                      //     hintText: "Road Name,Area,Colony(required)*",
+                      //     hintStyle: const TextStyle(
+                      //       fontSize: 10,
+                      //       fontFamily: myFont,
+                      //     ),
+                      //     fillColor: navBarColor,
+                      //   ),
+                      // ),
+                      // const MySizedBox(h: 15, w: 0),
+                      // TextFormField(
+                      //   controller: addressHouseNumberController,
+                      //   decoration: InputDecoration(
+                      //     border: OutlineInputBorder(
+                      //       borderSide: BorderSide.none,
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //     filled: true,
+                      //     hintText: "House No,Building Name(required)*",
+                      //     hintStyle: const TextStyle(
+                      //       fontSize: 10,
+                      //       fontFamily: myFont,
+                      //     ),
+                      //     fillColor: navBarColor,
+                      //   ),
+                      // ),
+                      // const MySizedBox(h: 15, w: 0),
+                      // TextFormField(
+                      //   controller: addressStateNameController,
+                      //   decoration: InputDecoration(
+                      //     border: OutlineInputBorder(
+                      //       borderSide: BorderSide.none,
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //     filled: true,
+                      //     hintText: "Starte(required)*",
+                      //     hintStyle: const TextStyle(
+                      //       fontSize: 10,
+                      //       fontFamily: myFont,
+                      //     ),
+                      //     fillColor: navBarColor,
+                      //   ),
+                      // ),
                       const MySizedBox(h: 15, w: 0),
                       ElevatedButton(
                         onPressed: () {
+                          final addressType = addressTypeController.text.trim();
+                          final place = addressPlaceController.text.trim();
+                          final sublocality =
+                              addressSublocalityController.text.trim();
+                          final locality =
+                              addressPincodeCobntroller.text.trim();
+                          final pincode = addressLocalityController.text.trim();
+
+                          addressData(
+                            pin: pincode,
+                            place: place,
+                            sublocality: sublocality,
+                            addressType: addressType,
+                            locality: locality,
+                          );
+                          const CircularProgressIndicator();
+
                           Navigator.of(context).pop();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -102,8 +228,9 @@ class ScreenLocation extends StatelessWidget {
                                 child: Text(
                                   "Address Added",
                                   style: TextStyle(
-                                      fontFamily: myFont,
-                                      fontWeight: FontWeight.bold),
+                                    fontFamily: myFont,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               shape: RoundedRectangleBorder(
@@ -147,17 +274,14 @@ class ScreenLocation extends StatelessWidget {
                               color: colorBlack),
                         ),
                       ),
+                      const MySizedBox(h: 20, w: 0)
                     ],
                   ),
                 ),
-              );
-            },
-          );
-        },
-        child: const Icon(
-          Icons.add_location_alt_rounded,
-          color: colorBlack,
-        ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

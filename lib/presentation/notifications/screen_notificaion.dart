@@ -51,6 +51,7 @@ class _ScreenNotificationState extends State<ScreenNotification> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   height: 180,
+                  width: double.infinity,
                   child: CarouselSlider(
                     items: notificationImages
                         .map(

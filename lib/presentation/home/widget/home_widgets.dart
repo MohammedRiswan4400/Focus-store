@@ -1,9 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import '../../../core/color/colors.dart';
 import '../../../core/widgets/focus_widgets.dart';
-import '../../extraS/productScreen/screen_product.dart';
-import '../../extraS/searchScreen/screen_search.dart';
+import '../services/home_screen_services.dart';
 
 class AppbarSearchHome extends StatelessWidget {
   const AppbarSearchHome({
@@ -56,6 +55,7 @@ class NewArrivalPhones extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: navBarColor,
+              // color: colorTransperant,
               borderRadius: BorderRadius.circular(
                 5,
               ),
@@ -82,9 +82,9 @@ class NewArrivalPhones extends StatelessWidget {
                 fontSize: 11,
                 fontWeight: FontWeight.w500),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+          const Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text(
                 "₹ 14,999",
                 style: TextStyle(
@@ -92,15 +92,15 @@ class NewArrivalPhones extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w500),
               ),
-              MySizedBox(h: 0, w: 24),
-              Icon(
-                Icons.favorite_border_outlined,
-                size: 20,
-              ),
-              Text(
-                " | ",
-                style: TextStyle(color: selectedItemsColor),
-              ),
+              // MySizedBox(h: 0, w: 24),
+              // Icon(
+              //   Icons.favorite_border_outlined,
+              //   size: 20,
+              // ),
+              // Text(
+              //   " | ",
+              //   style: TextStyle(color: selectedItemsColor),
+              // ),
               Text(
                 "4.5",
                 style: TextStyle(fontSize: 15),
@@ -117,22 +117,101 @@ class NewArrivalPhones extends StatelessWidget {
   }
 }
 
-void gotoSearchScreen(BuildContext context) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenSearch();
+Widget buildProduct({
+  required Product product,
+  required BuildContext context,
+}) =>
+    GestureDetector(
+      onTap: () {
+        gotoProductScreen(context: context, product: product);
       },
-    ),
-  );
-}
+      child: SizedBox(
+        // decoration: const BoxDecoration(color: Colors.amber),
 
-void gotoProductScreen(BuildContext context) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenProduct();
-      },
-    ),
-  );
-}
+        // height: 300,
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: navBarColor,
+                // color: colorTransperant,
+                borderRadius: BorderRadius.circular(
+                  5,
+                ),
+              ),
+              height: 115,
+              width: 200,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 15, bottom: 15, left: 50, right: 50),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    product.productImage[0],
+                    // fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            const MySizedBox(h: 3, w: 0),
+            Text(
+              product.producName,
+              style: const TextStyle(
+                  fontFamily: "Ubuntu",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500),
+            ),
+            Text(
+              "₹ ${product.price}",
+              style: const TextStyle(
+                  fontFamily: "Ubuntu",
+                  color: Color.fromARGB(255, 126, 125, 125),
+                  decoration: TextDecoration.lineThrough,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "₹ ${product.offerPrice}",
+                  style: const TextStyle(
+                      fontFamily: "Ubuntu",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
+                ),
+                // MySizedBox(h: 0, w: 24),
+                const Row(
+                  children: [
+                    // Icon(
+                    //   Icons.favorite_border_outlined,
+                    //   size: 20,
+                    // ),
+                    // Text(
+                    //   " | ",
+                    //   style: TextStyle(color: selectedItemsColor),
+                    // ),
+                    Text(
+                      "4.5",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Icon(
+                      Icons.star,
+                      size: 20,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+
+Stream<List<Product>> readProducts() => FirebaseFirestore.instance
+    .collection("Product")
+    .snapshots()
+    .map((snapshot) =>
+        snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList());

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:focus_store/presentation/login/screen_login.dart';
 import '../../../core/color/colors.dart';
 import '../../../core/widgets/focus_widgets.dart';
-import '../../navigaion/screen_navigation_page.dart';
 import '../screen_create_account.dart';
-import '../screen_main_first_login.dart';
-import '../screen_signin.dart';
 
 class LogoWidget extends StatelessWidget {
   const LogoWidget({
@@ -76,13 +72,11 @@ void gotoCreateAccount(BuildContext context) {
 // ignore: must_be_immutable
 class LoginTExtField extends StatelessWidget {
   String hintText;
-  AutovalidateMode eMailValidation;
   IconData prefix;
   bool obscureText;
   TextEditingController signInController;
   LoginTExtField({
     required this.obscureText,
-    required this.eMailValidation,
     required this.hintText,
     required this.prefix,
     required this.signInController,
@@ -97,7 +91,9 @@ class LoginTExtField extends StatelessWidget {
         obscureText: obscureText,
         textInputAction: TextInputAction.next,
         controller: signInController,
-        autovalidateMode: eMailValidation,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) =>
+            value != null && value.length < 6 ? "Enter min 6 charecter" : null,
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: Icon(prefix),
@@ -115,54 +111,4 @@ class LoginTExtField extends StatelessWidget {
       ),
     );
   }
-}
-
-void gotoSignInScren(BuildContext context) {
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenSignIn();
-      },
-    ),
-  );
-}
-
-void gotoApp(BuildContext context) {
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) {
-        return ScreenNavigation();
-      },
-    ),
-  );
-}
-
-void gotoScreenNavigation(BuildContext context) {
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) {
-        return ScreenNavigation();
-      },
-    ),
-  );
-}
-
-void gotoLogIn(BuildContext context) {
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenLogin();
-      },
-    ),
-  );
-}
-
-void gotofirstLoginScreen(BuildContext context) {
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenFirstLoginPage();
-      },
-    ),
-  );
 }

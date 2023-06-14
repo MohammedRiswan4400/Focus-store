@@ -1,8 +1,9 @@
 // import 'package:carousel_slider/carousel_controller.dart';
 import 'dart:ui';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+// ignore: unnecessary_import
+import 'package:flutter/services.dart';
 import 'package:focus_store/core/widgets/focus_widgets.dart';
 import '../../core/color/colors.dart';
 import 'widget/home_widgets.dart';
@@ -63,7 +64,9 @@ class _ScreenHomeState extends State<ScreenHome> {
                   height: 187,
                   width: double.infinity,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      // SystemChrome.setSystemUIMode(SystemUiMode.immersive);
+                    },
                     child: CarouselSlider(
                       items: imageList
                           .map(
@@ -97,23 +100,25 @@ class _ScreenHomeState extends State<ScreenHome> {
                   right: 0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: imageList.asMap().entries.map((entry) {
-                      return GestureDetector(
-                        onTap: () =>
-                            carouselController.animateToPage(entry.key),
-                        child: Container(
-                          width: currentIndex == entry.key ? 20 : 15,
-                          height: 3,
-                          margin: const EdgeInsets.symmetric(horizontal: 3),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: currentIndex == entry.key
-                                ? selectedItemsColor
-                                : unselectedItemsColor,
+                    children: imageList.asMap().entries.map(
+                      (entry) {
+                        return GestureDetector(
+                          onTap: () =>
+                              carouselController.animateToPage(entry.key),
+                          child: Container(
+                            width: currentIndex == entry.key ? 20 : 15,
+                            height: 3,
+                            margin: const EdgeInsets.symmetric(horizontal: 3),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: currentIndex == entry.key
+                                  ? selectedItemsColor
+                                  : unselectedItemsColor,
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      },
+                    ).toList(),
                   ),
                 )
               ],
@@ -127,12 +132,12 @@ class _ScreenHomeState extends State<ScreenHome> {
                   fontWeight: FontWeight.bold),
             ),
             const MySizedBox(h: 5, w: 0),
-            Row(
+            const Row(
               children: [
-                const InDemandContainerOne(),
-                const MySizedBox(h: 0, w: 9),
+                InDemandContainerOne(),
+                MySizedBox(h: 0, w: 9),
                 Column(
-                  children: const [
+                  children: [
                     InDemandContainerTwo(),
                     MySizedBox(h: 10, w: 0),
                     InDemandContainerThree(),
@@ -151,28 +156,46 @@ class _ScreenHomeState extends State<ScreenHome> {
                   fontWeight: FontWeight.bold),
             ),
             const MySizedBox(h: 5, w: 0),
-            GridView.builder(
-              scrollDirection: Axis.vertical,
-              physics: const ScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1.0,
-                crossAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                    onTap: () {
-                      gotoProductScreen(context);
+            StreamBuilder(
+              stream: readProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text(
+                      "Somthing went wrong!",
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  final products = snapshot.data!;
+                  return GridView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return buildProduct(product: product, context: context);
                     },
-                    child: const NewArrivalPhones());
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 1.0,
+                      crossAxisSpacing: 10,
+                    ),
+                    primary: false,
+                    shrinkWrap: true,
+                    // children: product.map(buildProduct).toList(),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
               },
-              itemCount: 6,
             ),
+            //
           ],
         ),
       ),
     );
+    // );
   }
 }

@@ -1,4 +1,4 @@
-package com.example.focus_store
+package com.brototype.focus_store
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,12 +1,10 @@
 // ignore_for_file: must_be_immutable
-import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_store/presentation/extraS/cart/screen_cart.dart';
 import '../../../core/color/colors.dart';
 import '../../../core/widgets/focus_widgets.dart';
-import '../../extraS/wishlistScreen/screen_wishlist.dart';
+import '../services/category_screen_services.dart';
 
 class CartWishlistContainer extends StatelessWidget {
   String title;
@@ -35,16 +33,6 @@ class CartWishlistContainer extends StatelessWidget {
       ),
     );
   }
-}
-
-void gotoWishList(BuildContext context) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenWishlist();
-      },
-    ),
-  );
 }
 
 void gotoCart(BuildContext context) {
@@ -145,7 +133,7 @@ class CategorySecondWidget extends StatelessWidget {
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10)),
-                      height: 124,
+                      // height: 120,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(
                           10,
@@ -191,7 +179,7 @@ class CategorySecondWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.amber),
-                          height: 144,
+                          // height: 144,
                           width: 134,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(
@@ -226,8 +214,8 @@ class CategorySecondWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Row(
-                              children: const [
+                            const Row(
+                              children: [
                                 Text(
                                   "See All",
                                   style: TextStyle(
@@ -263,12 +251,13 @@ class CategorySecondWidget extends StatelessWidget {
               10,
             ),
           ),
-          height: 485,
+          // height: 485,
           width: 100,
           child: Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding:
+                  const EdgeInsets.only(top: 4, bottom: 8, left: 4, right: 4),
               child: Column(
                 children: [
                   const MySizedBox(h: 10, w: 0),
@@ -291,7 +280,6 @@ class CategorySecondWidget extends StatelessWidget {
                     ),
                   ),
                   const MyDivider(),
-                  const MySizedBox(h: 10, w: 0),
                   StreamBuilder(
                     stream: readBrand(),
                     builder: (context, snapshot) {
@@ -312,31 +300,7 @@ class CategorySecondWidget extends StatelessWidget {
                         );
                       }
                     },
-                  )
-                  // Image.asset(
-                  //   "assets/Screenshot_2023-04-03_123417-removebg-preview.png",
-                  //   scale: 3,
-                  // ),
-                  // const MySizedBox(h: 10, w: 0),
-                  // Image.asset("assets/samsungBanner.png"),
-                  // const MySizedBox(h: 10, w: 0),
-                  // Image.asset(
-                  //   "assets/OnePlus_Logo.png",
-                  // ),
-                  // const MySizedBox(h: 10, w: 0),
-                  // Image.asset(
-                  //   "assets/42245.jpg",
-                  // ),
-                  // const MySizedBox(h: 30, w: 0),
-                  // Image.asset(
-                  //   "assets/Screenshot 2023-04-03 123335.png",
-                  // ),
-                  // Image.asset(
-                  //   "assets/Oppo-Logo.wine.png",
-                  // ),
-                  // Image.asset(
-                  //   "assets/vivo-logo-png-2.png",
-                  // ),
+                  ),
                 ],
               ),
             ),
@@ -346,21 +310,6 @@ class CategorySecondWidget extends StatelessWidget {
     );
   }
 }
-
-Widget buildBrand(Brands brands) => CircleAvatar(
-      backgroundColor: colorRed,
-      child: Image.network(
-        brands.brandImage,
-        fit: BoxFit.cover,
-        scale: 3,
-      ),
-    );
-
-Stream<List<Brands>> readBrand() => FirebaseFirestore.instance
-    .collection("Brands")
-    .snapshots()
-    .map((snapshot) =>
-        snapshot.docs.map((doc) => Brands.fromJson(doc.data())).toList());
 
 class CategoryThirdWidget extends StatelessWidget {
   const CategoryThirdWidget({
@@ -406,26 +355,17 @@ class CategoryThirdWidget extends StatelessWidget {
   }
 }
 
-class Brands {
-  String id;
-  final String brandImage;
-  final String brandName;
-
-  Brands({
-    this.id = "",
-    required this.brandName,
-    required this.brandImage,
-  });
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "brand": brandName,
-        "brandLogo": brandImage,
-      };
-
-  static Brands fromJson(Map<String, dynamic> json) => Brands(
-        brandName: json["brand"],
-        brandImage: json["brandLogo"],
-        id: json["id"],
-      );
-}
+Widget buildBrand(Brands brands) => Padding(
+      padding: const EdgeInsets.only(
+        bottom: 5,
+      ),
+      child: CircleAvatar(
+        radius: 27,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        child: Image.network(
+          brands.brandImage,
+          fit: BoxFit.fill,
+          scale: 3,
+        ),
+      ),
+    );

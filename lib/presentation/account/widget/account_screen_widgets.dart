@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:focus_store/core/widgets/focus_widgets.dart';
-import 'package:focus_store/presentation/extraS/addressScreen/screen_address.dart';
 
 import '../../../core/color/colors.dart';
 import '../../extraS/profile/screen_profile.dart';
@@ -184,22 +183,42 @@ class LogOutTile extends StatelessWidget {
   }
 }
 
-void gotoProfileScreen(BuildContext context) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenProfile();
-      },
-    ),
-  );
-}
-
-void gotoAddressScreen(BuildContext context) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) {
-        return const ScreenAddress();
-      },
-    ),
-  );
-}
+//   child: Text('Go to Next Page'),
+//   onPressed: () {
+//     Navigator.push(
+//       context,MaterialPageRoute(builder: (context) => NextPage()),
+//     );
+//   },
+// ),
+Widget buildUserDetails(ModelProfile modelProfile) => Column(
+      children: [
+        CircleAvatar(
+            backgroundColor: colorBlack,
+            radius: 40,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(
+                  modelProfile.profilePhoto,
+                  fit: BoxFit.cover,
+                ))),
+        const MySizedBox(h: 10, w: 0),
+        Text(
+          modelProfile.userName,
+          style: const TextStyle(
+              fontFamily: "Ubuntu", fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const MySizedBox(
+          h: 5,
+          w: 0,
+        ),
+        //   Text(
+        //     // modelProfile.eMail,
+        //   //   style: const TextStyle(
+        //   //     fontFamily: "Ubuntu",
+        //   //     fontSize: 12,
+        //   //   ),
+        //   // ),
+        //   const MySizedBox(h: 5, w: 0),
+        //   const MyDivider(),
+      ],
+    );

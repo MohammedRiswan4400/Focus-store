@@ -7,14 +7,43 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:485904535422:android:28051a10e041bfc3ca6d2f",
+        "mobilesdk_app_id": "1:485904535422:android:3655bab9dea437bcca6d2f",
         "android_client_info": {
-          "package_name": "com.example.focus_store"
+          "package_name": "com.brototype.focus_store"
         }
       },
       "oauth_client": [
         {
-          "client_id": "485904535422-br8ufjmv844l6q7su28q1l4ofljossjr.apps.googleusercontent.com",
+          "client_id": "485904535422-vgeagadkl1j3qpsmh7015n3tqtknmgfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv5tAAtN5MwS5p64ZSRb0Ez6SXkxgnaTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485904535422-br8ufjmv844l6q7su28q1l4ofljossjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485904535422:android:1bf117dcea6c9498ca6d2f",
+        "android_client_info": {
+          "package_name": "com.example.focus_store_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485904535422-vgeagadkl1j3qpsmh7015n3tqtknmgfr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
